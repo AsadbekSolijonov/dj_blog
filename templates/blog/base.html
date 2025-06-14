@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1-dars</title>
+</head>
+<body>
+<h1>Hello django!</h1>
+<hr>
+{% if key3 %}
+<h2>{{ key1 }} + {{ key2 }} = {{ key3 }}</h2>
+{% else %}
+<h2>Hech qanday ma'lumot yo'q</h2>
+{% endif %}
+<hr>
+<h2>Bloglar </h2>
+<ol>
+    {% for blog in blogs %}
+    <li style="font-size: 20px;">
+<!--        {% if talaba.payed %}-->
+<!--        ✅-->
+<!--        {% else %}-->
+<!--        ❌-->
+<!--        {% endif %}-->
+
+        {{ blog.title }}
+        <p>
+             {{ blog.content }}
+        </p>
+    </li>
+    {% endfor %}
+</ol>
+<hr>
+</body>
+</html>

@@ -1,0 +1,57 @@
+(.venv) ~/PDP/P_31/modul_2/dj_blog
+python manage.py createsuperuser
+Username (leave blank to use 'asadbeksolijonov'): admin
+Email address:
+Password:
+Password (again):
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+(.venv) ~/PDP/P_31/modul_2/dj_blog
+python manage.py shell
+7 objects imported automatically (use -v 2 for details).
+
+Python 3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from blog.models import Blog
+>>> blogs = Blog.objects.all()
+>>> blogs
+<QuerySet [<Blog: Django first project>, <Blog: Second blog>]>
+>>> blogs
+<QuerySet [<Blog: Django first project>, <Blog: Second blog>, <Blog: Third Blog>]>
+>>> for blog in blogs:
+...     print(blog.title)
+...
+Django first project
+Second blog
+Third Blog
+>>> blog = Blog.objects.get(id=1)
+>>> blog.title
+'Django first project'
+>>> blog.content
+"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+>>> str(blog.query)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Blog' object has no attribute 'query'
+>>> blog = Blog.objects.all()
+>>> str(blog.query)
+'SELECT "blog_blog"."id", "blog_blog"."title", "blog_blog"."content" FROM "blog_blog"'
+>>> blog = Blog.objects.filter(id=1)
+>>> str(blog.query)
+'SELECT "blog_blog"."id", "blog_blog"."title", "blog_blog"."content" FROM "blog_blog" WHERE "blog_blog"."id" = 1'
+>>> blog.title
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'QuerySet' object has no attribute 'title'
+>>> blog
+<QuerySet [<Blog: Django first project>]>
+>>> blog = blog.first()
+>>> blog.title
+'Django first project'
+>>> blog.title = 'First blog'
+>>> blog.save()
+>>>
