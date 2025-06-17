@@ -32,4 +32,10 @@ def home(request):
         "key3": c,
         "blogs": Blog.objects.all()
     }
-    return render(request, template_name='blog/base.html', context=context)
+    return render(request, template_name='blog/home.html', context=context)
+
+
+def about(request):
+    context = {
+    }
+    return render(request, template_name='blog/about.html', context=context)
