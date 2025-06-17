@@ -22,14 +22,7 @@ students = [st1, st2, st3, st4]
 
 
 def home(request):
-    a = random.randint(1, 100)
-    b = random.randint(101, 1000)
-    c = a + b
-
     context = {
-        "key1": a,
-        "key2": b,
-        "key3": c,
         "blogs": Blog.objects.all()
     }
     return render(request, template_name='blog/home.html', context=context)
