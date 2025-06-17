@@ -10,3 +10,10 @@
 ---------------------------------
 
 8. python manage.py createsuperuser
+
+
+Learn How to?
+1. HTML
+2. CSS, SCSS, SASS (Responsive)
+3. JavaScript
+4. React, Vue.js
