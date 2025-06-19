@@ -9,4 +9,4 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # 2025-06-22 15:28
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.id} {self.title}"

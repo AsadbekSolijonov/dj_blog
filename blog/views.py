@@ -1,7 +1,7 @@
 import random
 from dataclasses import dataclass
-
-from django.shortcuts import render
+from django.http import HttpResponseNotFound
+from django.shortcuts import render, get_object_or_404
 
 from blog.models import Blog
 
@@ -32,3 +32,11 @@ def about(request):
     context = {
     }
     return render(request, template_name='blog/about.html', context=context)
+
+
+def detail(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    context = {
+        "blog": blog
+    }
+    return render(request, template_name='blog/detail.html', context=context)
