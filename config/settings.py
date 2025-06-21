@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',  # new
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django_cleanup'
 ]
 
 MIDDLEWARE = [
@@ -118,3 +121,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'

@@ -24,9 +24,16 @@ students = [st1, st2, st3, st4]
 
 def home(request):
     context = {
-        "blogs": Blog.objects.all()
+        "blogs": Blog.objects.filter(is_active=True)
     }
     return render(request, template_name='blog/home.html', context=context)
+
+
+def in_active(request):
+    context = {
+        "blogs": Blog.objects.filter(is_active=False)
+    }
+    return render(request, template_name='blog/in_active.html', context=context)
 
 
 def about(request):
