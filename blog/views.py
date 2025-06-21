@@ -1,8 +1,9 @@
 import random
 from dataclasses import dataclass
 from django.http import HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from blog.forms import BlogForms
 from blog.models import Blog
 
 
@@ -40,3 +41,19 @@ def detail(request, blog_id):
         "blog": blog
     }
     return render(request, template_name='blog/detail.html', context=context)
+
+
+def update(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == 'POST':
+        form = BlogForms(request.POST, request.FILES, instance=blog)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = BlogForms(instance=blog)
+    context = {
+        "form": form,
+        "blog": blog
+    }
+    return render(request, 'blog/update.html', context=context)
