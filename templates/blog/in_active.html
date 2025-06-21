@@ -6,7 +6,7 @@
 
 {% block content %}
 
-{#    {% include 'blog/section.html' %}#}
+    {#    {% include 'blog/section.html' %}#}
 
     <h2>Aktivmas bloglar soni {{ blogs.count }} ta</h2>
 
@@ -35,8 +35,9 @@
                                 <p class="card-text">{{ blog.content|truncatechars:128 }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{% url 'detail' blog.id  %}" class="btn btn-sm btn-outline-secondary">View</a>
-                                        <a href="{% url 'update' blog.id %}" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a href="{% url 'detail' blog.id %}" class="btn btn-sm btn-outline-secondary">View</a>
+                                        <a href="{% url 'update' blog.id %}" type="button"
+                                           class="btn btn-sm btn-outline-secondary">Edit</a>
                                     </div>
                                     <small class="text-body-secondary">9 mins</small></div>
                             </div>
