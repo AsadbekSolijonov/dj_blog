@@ -64,3 +64,9 @@ def update(request, blog_id):
         "blog": blog
     }
     return render(request, 'blog/update.html', context=context)
+
+
+def delete(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    blog.delete()
+    return redirect('home')
