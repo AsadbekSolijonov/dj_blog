@@ -7,9 +7,8 @@
 {% block content %}
 
     {% include 'blog/section.html' %}
-
-    <h2>Bloglar soni {{ blogs.count }} ta</h2>
-
+    <span class="fs-2 fw-medium">Bloglar soni {{ blogs.count }} ta</span>
+    <a href="{% url 'create' %}" class="btn btn-outline-success float-end">+ Add Blog</a>
     <div class="album py-5 bg-body-tertiary">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -35,8 +34,9 @@
                                 <p class="card-text">{{ blog.content|truncatechars:128 }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{% url 'detail' blog.id  %}" class="btn btn-sm btn-outline-secondary">View</a>
-                                        <a href="{% url 'update' blog.id %}" type="button" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a href="{% url 'detail' blog.id %}" class="btn btn-sm btn-outline-secondary">View</a>
+                                        <a href="{% url 'update' blog.id %}" type="button"
+                                           class="btn btn-sm btn-outline-secondary">Edit</a>
                                     </div>
                                     <small class="text-body-secondary">9 mins</small></div>
                             </div>

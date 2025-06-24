@@ -3,6 +3,7 @@ from blog import views as blog_views
 
 urlpatterns = [
     path('', blog_views.home, name='home'),
+    path('create/', blog_views.create, name='create'),
     path('about/', blog_views.about, name='about'),
     path('in_actives/', blog_views.in_active, name='in_active_blogs'),
     path('<int:blog_id>/view', blog_views.detail, name='detail'),

@@ -1,6 +1,7 @@
 import random
 from dataclasses import dataclass
-from django.http import HttpResponseNotFound
+
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 
 from blog.forms import BlogForms
@@ -55,7 +56,8 @@ def update(request, blog_id):
     if request.method == 'POST':
         form = BlogForms(request.POST, request.FILES, instance=blog)
         if form.is_valid():
-            form.save()
+            blog = form.save()
+            messages.success(request, message=f"{blog.title} o'zgartirildi!")
             return redirect('home')
     else:
         form = BlogForms(instance=blog)
@@ -70,3 +72,20 @@ def delete(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     blog.delete()
     return redirect('home')
+
+
+def create(request):
+    if request.method == 'POST':
+        form = BlogForms(request.POST, request.FILES)
+        if form.is_valid():
+            blog = form.save()
+            messages.success(request, message=f"{blog.title} yaratildi!")
+            return redirect('home')
+    else:
+        messages.warning(request, message=f"Hozirda biz test rejimida ishlayapmiz!")
+        form = BlogForms()
+
+    context = {
+        "form": form
+    }
+    return render(request, 'blog/create_blog.html', context=context)
