@@ -37,8 +37,14 @@ def home(request):
 
 
 def in_active(request):
+    blog = Blog.objects.filter(is_active=False)
+
+    search = request.GET.get('in_active_query')
+    if search:
+        blog = Blog.objects.filter(title__icontains=search, is_active=False)
+
     context = {
-        "blogs": Blog.objects.filter(is_active=False)
+        "blogs": blog
     }
     return render(request, template_name='blog/in_active.html', context=context)
 
@@ -64,7 +70,9 @@ def update(request, blog_id):
         if form.is_valid():
             blog = form.save()
             messages.success(request, message=f"{blog.title} o'zgartirildi!")
-            return redirect('home')
+            if blog.is_active:
+                return redirect('home')
+            return redirect('in_active_blogs')
     else:
         form = BlogForms(instance=blog)
     context = {
