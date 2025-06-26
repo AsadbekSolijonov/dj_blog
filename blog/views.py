@@ -24,8 +24,14 @@ students = [st1, st2, st3, st4]
 
 
 def home(request):
+    blog = Blog.objects.filter(is_active=True)
+
+    search = request.GET.get('active_query')
+    if search:
+        blog = Blog.objects.filter(title__icontains=search, is_active=True)
+
     context = {
-        "blogs": Blog.objects.filter(is_active=True)
+        "blogs": blog
     }
     return render(request, template_name='blog/home.html', context=context)
 

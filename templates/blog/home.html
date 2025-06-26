@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block search %}
-    <form class="d-flex" role="search">
-        <input class="form-control me-2" name="active_query" type="search" placeholder="Active Blogs" aria-label="Search"/>
+    <form action="{% url 'home' %}" class="d-flex" role="search">
+        <input class="form-control me-2" name="active_query" type="search" placeholder="Active Blogs" aria-label="Search" required/>
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
 {% endblock %}
