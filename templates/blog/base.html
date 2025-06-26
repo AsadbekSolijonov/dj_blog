@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <!doctype html>
 <html lang="en" class="h-100" data-bs-theme="light">
 <head>
@@ -50,29 +51,32 @@
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li>
             </ul>
+
             {% block search %}
             {% endblock %}
+            <ul class="navbar-nav me-left mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
 
 {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show sticky-top" role="alert">
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show sticky-top z-3" role="alert">
         <strong>{{ message.tags|upper }}: </strong> {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 {% endfor %}
 
-
-{% include 'blog/carusel.html' %}
-
+{{ form|crispy }}
 
 <div class="container">
     {% block content %}
 
     {% endblock %}
 </div>
-
 
 {% include 'blog/footer.html' %}
 

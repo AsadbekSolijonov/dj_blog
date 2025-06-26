@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 
-from blog.forms import BlogForms
+from blog.forms import BlogForms, UserForms
 from blog.models import Blog
 
 
@@ -103,3 +103,11 @@ def create(request):
         "form": form
     }
     return render(request, 'blog/create_blog.html', context=context)
+
+
+def register(request):
+    form = UserForms()
+    context = {
+        "form": form
+    }
+    return render(request, 'blog/base.html', context=context)
