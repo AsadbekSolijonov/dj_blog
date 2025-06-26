@@ -4,6 +4,13 @@
     Home
 {% endblock %}
 
+{% block search %}
+    <form class="d-flex" role="search">
+        <input class="form-control me-2" name="active_query" type="search" placeholder="Active Blogs" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+{% endblock %}
+
 {% block content %}
 
     {% include 'blog/section.html' %}
