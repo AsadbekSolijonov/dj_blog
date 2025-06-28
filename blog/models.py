@@ -22,7 +22,10 @@ class Blog(models.Model):
 
 
 class CustomUser(AbstractUser):
-    phone = models.CharField(unique=True, blank=True, null=True)
+    phone = models.CharField(unique=True)
+
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.username

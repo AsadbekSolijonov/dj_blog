@@ -126,3 +126,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 AUTH_USER_MODEL = 'blog.CustomUser'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
