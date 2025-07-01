@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from blog.forms import CustomUserCreationForm  # ,  # CustomUserChangeForm
-from blog.models import Blog, CustomUser
+from blog.models import Blog, CustomUser, Profile
 
-admin.site.register(Blog)
+admin.site.register([Blog, Profile])
 
 
 @admin.register(CustomUser)

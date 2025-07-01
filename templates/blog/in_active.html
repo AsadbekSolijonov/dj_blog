@@ -45,7 +45,7 @@
                                         <a href="{% url 'update' blog.id %}" type="button"
                                            class="btn btn-sm btn-outline-secondary">Edit</a>
                                     </div>
-                                    <small class="text-body-secondary">9 mins</small></div>
+                                    <small class="text-body-secondary">{{ blog.created_at|timesince }} ago</small></div>
                             </div>
                         </div>
                     </div>

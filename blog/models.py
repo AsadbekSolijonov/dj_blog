@@ -9,6 +9,7 @@ class Blog(models.Model):
         'Travel stories': 'Travel stories',
         'Personal growth': 'Personal growth'
     }
+    author = models.ForeignKey('blog.CustomUser', on_delete=models.CASCADE)
     title = models.CharField(max_length=200, verbose_name='Sarlavha')
     content = models.TextField(verbose_name='Tavsif')
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
@@ -25,7 +26,15 @@ class CustomUser(AbstractUser):
     phone = models.CharField(unique=True)
 
     USERNAME_FIELD = 'phone'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='profile_img/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}, {self.user.phone}"

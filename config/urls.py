@@ -14,7 +14,9 @@ urlpatterns = [
     # User login
     path('login/', auth_views.LoginView.as_view(template_name='blog/login.html'), name='login'),
     path('logout/', blog_views.site_logout, name='site_logout'),
-    path('ask_login/', blog_views.ask_login, name='ask_login')
+    path('ask_login/', blog_views.ask_login, name='ask_login'),
+    path('profile/', blog_views.profile, name='profile'),
+    path('change/', blog_views.change_profile, name='change_profile')
 
 ]
 
