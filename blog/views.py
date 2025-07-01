@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
 from blog.forms import BlogForms, CustomUserCreationForm, ProfileForm, CustomUserChangeForm
@@ -12,42 +13,46 @@ from blog.models import Blog, CustomUser, Profile
 
 @login_required
 def home(request):
-    blog = Blog.objects.filter(is_active=True)
+    blogs = Blog.objects.filter(is_active=True)
 
     search = request.GET.get('active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=True)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=True)
+
+    paginator = Paginator(blogs, 6)
+    page_number = request.GET.get("page")
+    print(page_number)
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        "blogs": blog
+        "page_obj": page_obj,
+        "blog_count": paginator.count
     }
     return render(request, template_name='blog/home.html', context=context)
 
 
 @login_required
 def my_active_blogs(request):
-    blog = Blog.objects.filter(is_active=True, author=request.user)
-
+    blogs = Blog.objects.filter(is_active=True, author=request.user)
     search = request.GET.get('my_active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
 
     context = {
-        "blogs": blog
+        "blogs": blogs,
     }
     return render(request, template_name='blog/my_blogs.html', context=context)
 
 
 @login_required
 def in_active(request):
-    blog = Blog.objects.filter(is_active=False, author=request.user)
-
+    blogs = Blog.objects.filter(is_active=False, author=request.user)
     search = request.GET.get('in_active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
 
     context = {
-        "blogs": blog
+        "blogs": blogs,
     }
     return render(request, template_name='blog/in_active.html', context=context)
 
@@ -95,7 +100,6 @@ def create(request):
     if request.method == 'POST':
         form = BlogForms(request.POST, request.FILES)
         if form.is_valid():
-
             blog = form.save(commit=False)
             blog.author = request.user
             blog.save()  # commit=True
@@ -155,7 +159,7 @@ def change_profile(request):
             u_form.save()
         if p_form.is_valid():
             p_form.save()
-        return redirect('profile', user.id)
+        return redirect('profile')
     else:
         u_form = CustomUserChangeForm(instance=user)
         p_form = ProfileForm(instance=profile)
