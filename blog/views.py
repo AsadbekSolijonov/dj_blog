@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from blog.forms import BlogForms, CustomUserCreationForm, ProfileForm, CustomUserChangeForm
@@ -12,42 +15,45 @@ from blog.models import Blog, CustomUser, Profile
 
 @login_required
 def home(request):
-    blog = Blog.objects.filter(is_active=True)
+    blogs = Blog.objects.filter(is_active=True)
 
     search = request.GET.get('active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=True)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=True)
+
+    paginator = Paginator(blogs, 3)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        "blogs": blog
+        "page_obj": page_obj,
+        "blog_count": paginator.count
     }
     return render(request, template_name='blog/home.html', context=context)
 
 
 @login_required
 def my_active_blogs(request):
-    blog = Blog.objects.filter(is_active=True, author=request.user)
-
+    blogs = Blog.objects.filter(is_active=True, author=request.user)
     search = request.GET.get('my_active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
 
     context = {
-        "blogs": blog
+        "blogs": blogs,
     }
     return render(request, template_name='blog/my_blogs.html', context=context)
 
 
 @login_required
 def in_active(request):
-    blog = Blog.objects.filter(is_active=False, author=request.user)
-
+    blogs = Blog.objects.filter(is_active=False, author=request.user)
     search = request.GET.get('in_active_query')
     if search:
-        blog = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
+        blogs = Blog.objects.filter(title__icontains=search, is_active=False, author=request.user)
 
     context = {
-        "blogs": blog
+        "blogs": blogs,
     }
     return render(request, template_name='blog/in_active.html', context=context)
 
@@ -59,15 +65,21 @@ def about(request):
 
 
 def detail(request, blog_id):
-    blog = get_object_or_404(Blog, id=blog_id)
-    context = {
-        "blog": blog
-    }
-    return render(request, template_name='blog/detail.html', context=context)
+    # if request.user.has_perms(['blog.change_blog', 'blog.edit_blog', ])
+    if request.user.has_perm('blog.can_all_manage'):
+        blog = get_object_or_404(Blog, id=blog_id)
+        context = {
+            "blog": blog
+        }
+        return render(request, template_name='blog/detail.html', context=context)
 
 
 def update(request, blog_id):
-    blog = get_object_or_404(Blog, id=blog_id)
+    if request.user.has_perm('blog.change_blog'):
+        blog = get_object_or_404(Blog, id=blog_id)
+    else:
+        blog = get_object_or_404(Blog, id=blog_id, author=request.user)
+
     if request.method == 'POST':
         form = BlogForms(request.POST, request.FILES, instance=blog)
         if form.is_valid():
@@ -86,8 +98,11 @@ def update(request, blog_id):
 
 
 def delete(request, blog_id):
-    blog = get_object_or_404(Blog, id=blog_id)
-    blog.delete()
+    if request.user.has_perm('blog.delete_blog'):
+        blog = get_object_or_404(Blog, id=blog_id, author=request.user)
+        blog.delete()
+    else:
+        return HttpResponse('Siz bu blogni ochira olmaysiz')
     return redirect('home')
 
 
@@ -95,7 +110,6 @@ def create(request):
     if request.method == 'POST':
         form = BlogForms(request.POST, request.FILES)
         if form.is_valid():
-
             blog = form.save(commit=False)
             blog.author = request.user
             blog.save()  # commit=True
@@ -155,7 +169,7 @@ def change_profile(request):
             u_form.save()
         if p_form.is_valid():
             p_form.save()
-        return redirect('profile', user.id)
+        return redirect('profile')
     else:
         u_form = CustomUserChangeForm(instance=user)
         p_form = ProfileForm(instance=profile)
@@ -165,3 +179,14 @@ def change_profile(request):
         "p_form": p_form
     }
     return render(request, 'user/profile_change.html', context=context)
+
+
+def test_email(request):
+    send_mail(
+        'Test',
+        'Message test',
+        'iamsolijonovasadbek@gmail.com',
+        CustomUser.objects.values_list('email', flat=True),
+        fail_silently=False,
+    )
+    return HttpResponse('Test email muvoffaqqiyatli yuborildi!')

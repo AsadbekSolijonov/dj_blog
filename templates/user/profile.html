@@ -11,7 +11,7 @@
         <div class="col-md-7">
             <h2 class="featurette-heading">{{ user.get_full_name }}</h2>
             <p class="lead"><i class="bi bi-telephone-fill"></i> Tel: +998 {{ user.phone }}</p>
-            <p class="lead"><i class="bi bi-envelope"></i> email: {{ user.email }}</p>
+{#            <p class="lead"><i class="bi bi-envelope"></i> email: {{ user.email }}</p>#}
             <p class="lead"><i class="bi bi-person-bounding-box"></i> username: {{ user.username }}</p>
             <!-- Change UserForm Link-->
             <a href="{% url 'change_profile' %}" class="btn btn-outline-primary">Change my info</a>
