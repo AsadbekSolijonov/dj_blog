@@ -1,5 +1,6 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+from config.settings import AUTH_USER_MODEL
 
 
 class Blog(models.Model):
@@ -9,7 +10,7 @@ class Blog(models.Model):
         'Travel stories': 'Travel stories',
         'Personal growth': 'Personal growth'
     }
-    author = models.ForeignKey('blog.CustomUser', on_delete=models.CASCADE)
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, verbose_name='Sarlavha')
     content = models.TextField(verbose_name='Tavsif')
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
@@ -27,19 +28,17 @@ class Blog(models.Model):
         ]
 
 
-class CustomUser(AbstractUser):
-    phone = models.CharField(unique=True)
-
-    USERNAME_FIELD = 'phone'
-    REQUIRED_FIELDS = ['username']
-
-    def __str__(self):
-        return self.username
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='profile_img/', blank=True, null=True)
+class Comment(models.Model):
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    message = models.CharField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}, {self.user.phone}"
+        if self.author:
+            return f"{self.author.username}: {self.message[:30]}"
+        return f"{self.message[:30]}"
+
+    class Meta:
+        ordering = ['-created_at']
+
