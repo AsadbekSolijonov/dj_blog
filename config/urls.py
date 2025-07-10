@@ -30,7 +30,11 @@ urlpatterns = [
          name='password_reset_confirm'),
     path('password-reset-complated/', auth_views.PasswordResetCompleteView.as_view(
         template_name='mail/password_reset_complete.html'),
-         name='password_reset_complete')
+         name='password_reset_complete'),
+
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
+    # path("upload/", custom_upload_function, name="custom_upload_file"),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

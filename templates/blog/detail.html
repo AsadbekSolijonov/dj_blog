@@ -10,7 +10,7 @@
             <span class="fw-bold"><i class="bi bi-person-fill"></i> Author: {{ blog.author }} | </span>
             <span class="badge rounded-pill text-bg-secondary"># {{ blog.type }}</span>
 
-            <p class="lead my-5">{{ blog.content }}</p>
+            <p class="lead my-5">{{ blog.content|safe }}</p>
             <p>
 
                 {% if blog.image %}

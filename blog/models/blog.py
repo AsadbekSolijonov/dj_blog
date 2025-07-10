@@ -1,6 +1,7 @@
 from django.db import models
 
 from config.settings import AUTH_USER_MODEL
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Blog(models.Model):
@@ -12,7 +13,7 @@ class Blog(models.Model):
     }
     author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, verbose_name='Sarlavha')
-    content = models.TextField(verbose_name='Tavsif')
+    content = CKEditor5Field(verbose_name='Tavsif')
     image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     type = models.CharField(max_length=50, choices=TYPE, default='Jounal')
@@ -41,4 +42,3 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-

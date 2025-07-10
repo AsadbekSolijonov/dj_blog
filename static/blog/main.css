@@ -1,4 +1,35 @@
-.img-cover{
+.img-cover {
     height: 225px;
     object-fit: cover;
 }
+
+blockquote {
+    margin: 2rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #4a90e2; /* Chapdagi chiziq */
+    background-color: #f9f9f9; /* Yengil fon */
+    font-style: italic;
+    color: #333;
+    position: relative;
+    font-family: "Georgia", serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+blockquote::before {
+    content: "“";
+    font-size: 3rem;
+    color: #4a90e2;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    line-height: 1;
+}
+
+blockquote p {
+    margin: 0;
+    text-align: justify; /* Sizda HTML orqali berilgan uslubni CSS da takrorlaymiz */
+}
+
